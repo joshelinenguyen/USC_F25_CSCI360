@@ -47,9 +47,30 @@ def apply_sequence(stack, sequence):
 
 def breadth_first_search(stack):
     flip_sequence = []
+    
+    visited = set()
+    queue = deque([(stack.copy(), [])])
 
-    # --- v ADD YOUR CODE HERE v --- #
+    while queue:
+        current_stack, sequence_so_far = queue.popleft()
 
+        # check if goal reached
+        if current_stack.check_ordered():
+            return sequence_so_far
+
+        # mark as visited
+        state_id = (tuple(current_stack.order), tuple(current_stack.orientations))
+        if state_id in visited:
+            continue
+        visited.add(state_id)
+
+        # generate next states by flipping 
+        for pos in range(1, current_stack.num_books + 1):
+            new_stack = current_stack.copy()
+            new_stack.flip_stack(pos)
+            new_seq = sequence_so_far + [pos]
+            queue.append((new_stack, new_seq))
+            
     return flip_sequence
     # ---------------------------- #
 
@@ -57,8 +78,28 @@ def breadth_first_search(stack):
 def depth_first_search(stack):
     flip_sequence = []
 
-    # --- v ADD YOUR CODE HERE v --- #
+    visited = set()
+    stack_container = [(stack.copy(), [])] 
 
+    while stack_container:
+        current_stack, sequence_so_far = stack_container.pop()
+
+        # check if goal reached
+        if current_stack.check_ordered():
+            return sequence_so_far
+
+        # mark as visited
+        state_id = (tuple(current_stack.order), tuple(current_stack.orientations))
+        if state_id in visited:
+            continue
+        visited.add(state_id)
+
+        # generate next states by flipping 
+        for pos in range(1, current_stack.num_books + 1):
+            new_stack = current_stack.copy()
+            new_stack.flip_stack(pos)
+            new_seq = sequence_so_far + [pos]
+            stack_container.append((new_stack, new_seq))
 
     return flip_sequence
     # ---------------------------- #
