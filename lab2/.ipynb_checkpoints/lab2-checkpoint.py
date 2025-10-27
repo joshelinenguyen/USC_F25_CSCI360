@@ -97,7 +97,9 @@ def a_star_search(stack):
     # create a priority queue with the help of the heuristic function
     cost = heuristic(stack)
     heap = []
-    heappush(heap, (cost, 0, stack, [])) 
+    # added in a tie breaker for when f and g are the same
+    tie_breaker = 0
+    heappush(heap, (cost, 0, tie_breaker, stack, [])) 
 
     # keeps track of visited pairs
     visited = set()
@@ -105,7 +107,7 @@ def a_star_search(stack):
 
     while heap:
         # pops the pair with the lowest value from the heap
-        estimated_cost, actual_cost, current, path = heappop(heap)
+        estimated_cost, actual_cost, count, current, path = heappop(heap)
 
         # if the stack is already in order and all face up then store the path 
         if current.check_ordered():
@@ -132,9 +134,10 @@ def a_star_search(stack):
             g = actual_cost + 1                  
             h = heuristic(temp_stack)
             f = g + h
-
+            tie_breaker += 1
+            
             # update priority queue
-            heappush(heap, (f, g, temp_stack, path + [books]))
+            heappush(heap, (f, g, tie_breaker, temp_stack, path + [books]))
             
     return flip_sequence
     
