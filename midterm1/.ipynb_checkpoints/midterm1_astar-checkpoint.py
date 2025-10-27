@@ -108,7 +108,7 @@ def a_star_search(grid, K=1):
                 h = heuristic((nx, ny), (gx, gy))
                 f = new_cost + h
 
-                heapq.pushheap(queue, (f, new_cost, nx, ny, battery_life, path + [(nx, ny)])
+                heapq.pushheap(queue, (f, new_cost, nx, ny, battery_life, path + [(nx, ny)]))
                                         
     # ----- WRITE YOUR CODE ABOVE -----
     
